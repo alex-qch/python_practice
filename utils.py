@@ -5,8 +5,6 @@ from config import shelve_name, database_name
 from random import shuffle
 
 def count_rows():
-    """Данный метод считает общее количество строк в бд и сохраняет в хранилище.
-    Потом из этого количества будем выбирать музыку."""
 
     db = SQLighter(database_name)
     rowsnum = db.count_rows()
@@ -14,27 +12,15 @@ def count_rows():
          storage['rows_count'] = rowsnum
 
 def get_rows_count():
-    """ Получает из хранилища количество строк в БД
-    :return: (int) Число строк"""
     with shelve.open(shelve_name) as storage:
          rowsnum = storage['rows_count']
     return rowsnum
 
 def set_user_game(chat_id, estimated_answer):
-    """
-    Записываем юзера в игроки и запоминаем, что он должен ответить.
-    :param chat_id юзера
-    :param estimated_answer: правильный ответ (из БД)
-    """
-
     with shelve.open(shelve_name) as storage:
          storage[str(chat_id)] = estimated_answer
 
 def finish_user_game(chat_id):
-    """
-    Заканчиваем игру текущего пользователя и удаляем правильный ответ из хранилища
-    :param chat_id: id юзера
-    """
     with shelve.open(shelve_name) as storage:
          del storage[str(chat_id)]
 
